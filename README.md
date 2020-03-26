@@ -11,4 +11,5 @@ Type `todo.sh ddp [priority] [duedate]`"Your new task"
 - priority format `[a-Z]`
 - duedate format `['mon'-'sun'] / [next day number]`
   you can use special format such as `[td]=today, [nw]=next week or [unk]=unknown`
+
 Nb: `[unk]` is required when you have no idea about duedata
