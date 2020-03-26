@@ -1,0 +1,62 @@
+#!/bin/bash
+
+shift
+#priority logic
+pri=false
+if [[ $1 = [a-zA-Z] ]]; then
+	pri=$1
+	shift
+fi
+
+#duedate logic
+inputdate=$(cut -d '+' -f2 <<< $1)
+shift
+echo $inputdates
+createdate=$(date +%Y-%m-%d)
+if [[ $inputdate =~ ^[0-9]+$ ]]; then
+	inputdate=$(date --date="$inputdate day" +%Y-%m-%d)
+else
+	if [[ $inputdate == "nw" ]]; then
+		inputdate="+7"
+	elif [[ $inputdate == "td" ]]; then
+		inputdate="Today"
+	elif [[ $inputdate == "unk" ]]; then
+		inputdate=false
+	else
+		low=$(echo $inputdate | tr '[:upper:]' '[:lower:]')
+		case $low in
+			"mon")
+				inputdate="Monday"
+				;;
+			"tue")
+				inputdate="Tuesday"
+				;;
+			"wed")
+				inputdate="Wednesday"
+				;;
+			"thu")
+				inputdate="Thursday"
+				;;
+			"fri")
+				inputdate="Friday"
+				;;
+			"sat")
+				inputdate="Saturday"
+				;;
+			"sun")
+				inputdate="Sunday"
+				;;
+			*)
+				echo "error due date: --help for help"
+				exit 128
+				;;
+		esac
+	fi
+fi
+
+if "$TODO_SH" command add "$@"; then
+     line=`sed -n '$ =' "$TODO_FILE"`
+     "$TODO_SH" prep "$line" $createdate
+     [ $inputdate != false ] && "$TODO_SH" command app "$line" $inputdate
+     [ $pri != false ] && "$TODO_SH" command pri "$line" $pri
+fi
