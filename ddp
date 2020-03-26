@@ -57,6 +57,6 @@ fi
 if "$TODO_SH" command add "$@"; then
      line=`sed -n '$ =' "$TODO_FILE"`
      "$TODO_SH" prep "$line" $createdate
-     [ $inputdate != false ] && "$TODO_SH" command app "$line" $inputdate
+     [ $inputdate != false ] && "$TODO_SH" command app "$line" due:$inputdate
      [ $pri != false ] && "$TODO_SH" command pri "$line" $pri
 fi
